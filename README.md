@@ -22,6 +22,6 @@ bincom/
 ├── assignment1.html
 ├── assets/
 │   └── img/
-│       └── swergthyj.png
+│       └── hero.png
 └── README.md
 ```
