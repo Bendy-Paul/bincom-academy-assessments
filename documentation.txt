@@ -1,0 +1,144 @@
+====================================================================
+BINCOM PHP COURSE - ASSESSMENT 1
+Project Documentation
+====================================================================
+
+Author : Bendy Paul
+GitHub : https://github.com/Bendy-Paul/bincom-academy-assessments
+Date   : 2026
+
+
+--------------------------------------------------------------------
+1. INTRODUCTION
+--------------------------------------------------------------------
+This document explains how I set up my development environment for the
+Bincom PHP course and describes the project I completed for my first
+assessment: building a simple, single-page website using HTML and CSS.
+
+The goal of the assessment was to demonstrate a clear understanding of
+basic HTML structure and CSS styling, and to be able to host and view
+the page through a local server.
+
+
+--------------------------------------------------------------------
+2. DEVELOPMENT ENVIRONMENT SETUP
+--------------------------------------------------------------------
+
+2.1 Visual Studio Code (VS Code)
+--------------------------------
+Visual Studio Code is the code editor I used to write the HTML and CSS.
+
+    a. Downloaded VS Code from https://code.visualstudio.com
+    b. Installed it using the default installation options.
+    c. Opened my project folder directly in VS Code:
+       File > Open Folder > selected the project folder.
+
+Recommended extensions used:
+    - Live Server (for quick local preview and auto-refresh)
+    - HTML CSS Support
+    - Prettier (optional, for consistent code formatting)
+
+
+2.2 XAMPP (Local Server)
+------------------------
+XAMPP provides the local Apache server used to host and test the page,
+just as it would run on a real web server.
+
+    a. Downloaded XAMPP from https://www.apachefriends.org
+    b. Installed XAMPP and launched the XAMPP Control Panel.
+    c. Started the "Apache" module (and MySQL where needed).
+    d. Copied the project folder into the XAMPP web root:
+
+           C:\xampp\htdocs\bincom
+
+    e. Opened the browser and visited:
+
+           http://localhost/bincom/assignment1.html
+
+
+--------------------------------------------------------------------
+3. PROJECT OVERVIEW
+--------------------------------------------------------------------
+The project is a responsive one-page website built with plain HTML and
+CSS (no frameworks). Markup and styling are kept separate: the HTML
+lives in assignment1.html while all styling is in an external
+stylesheet at assets/css/assessment1.css. The page is fully responsive
+with a breakpoint at 960px.
+
+File structure:
+
+    bincom/
+    |-- assignment1.html              (the web page markup)
+    |-- assets/
+    |   |-- css/
+    |   |   `-- assessment1.css       (external stylesheet)
+    |   `-- img/
+    |       `-- hero.png              (hero / section image)
+    |-- README.md
+    `-- documentation.txt
+
+Page sections:
+    - Header with the Bincom ICT brand, navigation links and a
+      "Drop us a Message" button
+    - Hero section with headline, description and two call-to-action
+      buttons ("Get Quick Cash", "Learn More") plus an image and
+      slider dots
+    - "Our Service Arms" feature grid (3 columns) with icons
+    - About split section with a framed image and a "Since 2006" badge
+    - "Projects & Clients Case Study" reversed split section with a
+      checklist of items
+    - Footer with brand, service links and contact information
+
+Third-party resources:
+    - Google Fonts (Poppins)
+    - Font Awesome 6 icons
+
+CSS features demonstrated:
+    - CSS custom properties (variables) for the colour palette
+    - CSS reset (* { margin, padding, box-sizing })
+    - Flexbox for the header layout
+    - CSS Grid for the hero, features grid and split sections
+    - Linear-gradient hero background
+    - Responsive design using a media query (max-width: 960px)
+    - Transitions, hover states and image object-fit framing
+
+
+--------------------------------------------------------------------
+4. HOW TO RUN THE PROJECT
+--------------------------------------------------------------------
+    1. Make sure XAMPP is installed and the Apache module is running.
+    2. Place the "bincom" folder inside C:\xampp\htdocs
+    3. In your browser, go to:
+           http://localhost/bincom/assignment1.html
+    4. (Optional) In VS Code, right-click assignment1.html and choose
+       "Open with Live Server" for live preview.
+
+
+--------------------------------------------------------------------
+5. RECENT CHANGES
+--------------------------------------------------------------------
+    - Moved all CSS out of the inline <style> block in
+      assignment1.html into the external file
+      assets/css/assessment1.css.
+    - Added assets/img/hero.png and used it in the hero and split
+      sections.
+    - Added Font Awesome icons and the Poppins font, and rebuilt the
+      layout with a responsive grid/hero design.
+
+
+--------------------------------------------------------------------
+6. SOURCE CODE / REPOSITORY
+--------------------------------------------------------------------
+All assessment files are available on GitHub.
+
+    >>> View the source code: https://github.com/Bendy-Paul/bincom-academy-assessments
+
+    >>> Visit the repository to explore, clone, or follow my progress
+        through the Bincom PHP course.
+
+    Git clone command:
+        git clone https://github.com/Bendy-Paul/bincom-academy-assessments.git
+
+--------------------------------------------------------------------
+END OF DOCUMENT
+--------------------------------------------------------------------
