@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bincom ICT Solutions</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #17352a;
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: auto;
+        }
+
+        nav {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5eee8;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, .96);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #138a52;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            font-size: .95rem;
+        }
+
+        .nav-links a:hover {
+            color: #138a52;
+        }
+
+        .hero {
+            padding: 105px 0 95px;
+background: linear-gradient(0deg, rgba(19, 138, 82, .2), rgba(19, 138, 82, .2)), url('assets/img/swergthyj.png') center/cover no-repeat;        }
+
+        .hero-content {
+            max-width: 720px;
+            color: #fff;
+
+            p{
+                
+                color: #e1f0e8;
+            }
+        }
+
+        .eyebrow {
+            color: #138a52;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: .78rem;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.05;
+            margin-bottom: 22px;
+        }
+
+        .hero p {
+            font-size: 1.12rem;
+            /* color: #52645b; */
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 6px;
+            background: #138a52;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .btn:hover {
+            background: #0d7042;
+        }
+
+        section {
+            padding: 82px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 14px;
+        }
+
+        .section-lead {
+            color: #627168;
+            max-width: 700px;
+            margin-bottom: 35px;
+        }
+
+        .about {
+            background: #fff;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 55px;
+            align-items: center;
+        }
+
+        .about-box {
+            border-left: 4px solid #138a52;
+            padding-left: 24px;
+            color: #52645b;
+        }
+
+        .services {
+            background: #f7faf8;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e1ebe5;
+            border-radius: 8px;
+            padding: 28px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #138a52;
+        }
+
+        .card p {
+            color: #627168;
+            font-size: .95rem;
+        }
+
+        footer {
+            background: #10271d;
+            color: #dce9e1;
+            padding: 35px 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+        }
+
+        footer strong {
+            color: #fff;
+        }
+
+        footer p {
+            font-size: .9rem;
+            color: #aebeb5;
+        }
+
+        @media (max-width: 760px) {
+            .nav-links {
+                gap: 14px;
+                font-size: .82rem;
+            }
+
+            .about-grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 75px 0;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+            <a class="logo" href="#">Bincom</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <div class="eyebrow">Bincom ICT Solutions</div>
+            <h1>Technology that works for your business.</h1>
+            <p>
+                Bincom ICT Solutions provides technology solutions, consulting,
+                development and support to help organisations make better use of technology.
+            </p>
+            <a class="btn" href="#services">Explore Services</a>
+        </div>
+    </header>
+
+    <section class="about" id="about">
+        <div class="container about-grid">
+            <div>
+                <div class="eyebrow">About Bincom</div>
+                <h2 class="section-title">Building practical technology solutions since 2006.</h2>
+                <p class="section-lead">
+                    Bincom ICT Solutions is an ICT solutions company focused on helping
+                    organisations use technology for communication, operations and production.
+                </p>
+            </div>
+            <div class="about-box">
+                <p>
+                    From software development and web services to ICT management and
+                    technology implementation, Bincom works with businesses and organisations
+                    to design, develop and support solutions around their specific needs.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="eyebrow">What We Do</div>
+            <h2 class="section-title">Bincom Services</h2>
+            <p class="section-lead">
+                A range of technology services designed for startups, businesses and organisations.
+            </p>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Development + Support</h3>
+                    <p>Web and mobile applications, software development and ongoing technical support.</p>
+                </div>
+                <div class="card">
+                    <h3>Web Services</h3>
+                    <p>End-to-end web solutions, social media and emerging media services tailored to clients.</p>
+                </div>
+                <div class="card">
+                    <h3>ICT Service Management</h3>
+                    <p>Project management, ICT consulting and technology resources for organisations.</p>
+                </div>
+                <div class="card">
+                    <h3>Technology Implementation</h3>
+                    <p>Technology consulting, business intelligence and custom application implementation.</p>
+                </div>
+                <div class="card">
+                    <h3>ICT Products + Services</h3>
+                    <p>Technology products and platforms developed to address practical business and social needs.</p>
+                </div>
+                <div class="card">
+                    <h3>Project + Event</h3>
+                    <p>Technology-driven projects, initiatives and events that connect people and opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container footer-inner">
+            <div>
+                <strong>Bincom ICT Solutions</strong>
+                <p>Best Use of Technology from Nigeria to the world.</p>
+            </div>
+            <p>© 2026 Bincom ICT Solutions</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
