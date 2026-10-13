@@ -4,6 +4,9 @@
 
 This documentation details the technical architecture, design decisions, and implementation techniques used to build the **Bincom Assignment 2 To-Do App** using exclusively **HTML5** and **CSS3**.
 
+The repository for this assignment is hosted on GitHub at:
+- **GitHub Repository**: [https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment2](https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment2)
+
 The goal of this assignment is to produce a functional, clean, and interactive user interface without relying on JavaScript or external frontend dependencies.
 
 ---

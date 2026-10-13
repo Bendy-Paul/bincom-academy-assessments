@@ -2,6 +2,8 @@
 
 A clean and lightweight To-Do application built using **HTML and CSS only**. This project was created as part of the Bincom Academy assessment.
 
+- **GitHub Repository**: [https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment2](https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment2)
+
 ---
 
 ## 📌 Project Overview
