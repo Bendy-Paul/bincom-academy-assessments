@@ -14,43 +14,37 @@ The project repository is hosted on GitHub at:
 The project adheres to a clean separation of concerns:
 - **Structure (`index.html`)**: Declares UI elements using HTML5 semantic tags and descriptive `data-*` attributes to decouple layout from logic.
 - **Presentation (`style.css`)**: Implements CSS Grid for precise button matrix alignment, responsive sizing, and interactive tactile feedback.
-- **Logic (`script.js`)**: Encapsulates state, operations, parsing, formatting, and event handlers inside an ES6 `Calculator` class.
+- **Logic (`script.js`)**: Encapsulates state variables (`currentInput`, `previousInput`, `operator`), arithmetic operations, and event listeners using clean, modular functions.
 
 ---
 
 ## 3. Implementation Breakdown
 
-### 3.1 State Management (`Calculator` Class)
+### 3.1 State Management & Functions
 
-The calculator maintains internal state variables:
-- `currentOperand`: String representing the currently active number being entered or the computation output.
-- `previousOperand`: String representing the stored previous operand before an operator was selected.
-- `operation`: String symbol of the chosen binary operation (`+`, `-`, `×`, `÷`).
-- `shouldResetScreen`: Boolean flag indicating whether the next entered digit should clear the current output (such as directly after pressing `=`).
+The calculator uses intuitive top-level state variables:
+- `currentInput`: String representing the currently active number being entered or the computation output.
+- `previousInput`: String representing the stored previous operand before an operator was selected.
+- `operator`: String symbol of the chosen binary operation (`+`, `-`, `×`, `÷`).
 
 ### 3.2 Core Calculation Logic
 
 Calculations are performed with `parseFloat()` and standard arithmetic operations:
 ```javascript
-switch (this.operation) {
+switch (operator) {
   case "+":
-    computation = prev + current;
+    result = prev + current;
     break;
   case "-":
-  case "−":
-    computation = prev - current;
+    result = prev - current;
     break;
   case "×":
   case "*":
-    computation = prev * current;
+    result = prev * current;
     break;
   case "÷":
   case "/":
-    if (current === 0) {
-      this.currentOperand = "Error";
-      return;
-    }
-    computation = prev / current;
+    result = current === 0 ? "Error" : prev / current;
     break;
 }
 ```

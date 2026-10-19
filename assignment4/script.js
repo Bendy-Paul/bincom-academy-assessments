@@ -1,230 +1,126 @@
-/**
- * Bincom Assignment 4 - Simple Calculator
- * Handles arithmetic calculations, state management, and user interactions.
- */
+// Display elements
+const currentDisplay = document.getElementById("currentOperand");
+const previousDisplay = document.getElementById("previousOperand");
 
-class Calculator {
-  constructor(previousOperandElement, currentOperandElement) {
-    this.previousOperandElement = previousOperandElement;
-    this.currentOperandElement = currentOperandElement;
-    this.clear();
+// State variables
+let currentInput = "0";
+let previousInput = "";
+let operator = null;
+
+// Update the screen display
+function updateDisplay() {
+  currentDisplay.innerText = currentInput;
+  previousDisplay.innerText = operator ? `${previousInput} ${operator}` : "";
+}
+
+// Append a number or decimal point
+function appendNumber(num) {
+  if (currentInput === "0" && num !== ".") {
+    currentInput = num;
+  } else if (num === "." && currentInput.includes(".")) {
+    return;
+  } else {
+    currentInput += num;
   }
+  updateDisplay();
+}
 
-  clear() {
-    this.currentOperand = "0";
-    this.previousOperand = "";
-    this.operation = undefined;
-    this.shouldResetScreen = false;
-  }
+// Select an arithmetic operator
+function setOperator(op) {
+  if (currentInput === "" || currentInput === "Error") return;
+  if (previousInput !== "") calculate();
+  operator = op;
+  previousInput = currentInput;
+  currentInput = "";
+  updateDisplay();
+}
 
-  delete() {
-    if (this.currentOperand === "Error") {
-      this.clear();
+// Compute the result
+function calculate() {
+  const prev = parseFloat(previousInput);
+  const current = parseFloat(currentInput);
+
+  if (isNaN(prev) || isNaN(current)) return;
+
+  let result;
+  switch (operator) {
+    case "+":
+      result = prev + current;
+      break;
+    case "-":
+      result = prev - current;
+      break;
+    case "×":
+    case "*":
+      result = prev * current;
+      break;
+    case "÷":
+    case "/":
+      result = current === 0 ? "Error" : prev / current;
+      break;
+    default:
       return;
-    }
-    if (this.shouldResetScreen) {
-      return;
-    }
-    if (this.currentOperand.length <= 1) {
-      this.currentOperand = "0";
-    } else {
-      this.currentOperand = this.currentOperand.slice(0, -1);
-    }
   }
 
-  appendNumber(number) {
-    if (this.currentOperand === "Error" || (this.currentOperand === "0" && number !== ".") || this.shouldResetScreen) {
-      if (number === ".") {
-        this.currentOperand = "0.";
-      } else {
-        this.currentOperand = number.toString();
-      }
-      this.shouldResetScreen = false;
-      return;
-    }
+  currentInput = result.toString();
+  operator = null;
+  previousInput = "";
+  updateDisplay();
+}
 
-    if (number === "." && this.currentOperand.includes(".")) {
-      return;
-    }
+// Clear all inputs
+function clearAll() {
+  currentInput = "0";
+  previousInput = "";
+  operator = null;
+  updateDisplay();
+}
 
-    // Prevent overly long numbers that overflow screen
-    if (this.currentOperand.length >= 14) {
-      return;
-    }
-
-    this.currentOperand += number.toString();
+// Delete the last character
+function deleteLast() {
+  if (currentInput === "Error" || currentInput.length <= 1) {
+    currentInput = "0";
+  } else {
+    currentInput = currentInput.slice(0, -1);
   }
+  updateDisplay();
+}
 
-  applyPercent() {
-    if (this.currentOperand === "Error") return;
-    const current = parseFloat(this.currentOperand);
-    if (isNaN(current)) return;
-
-    const result = current / 100;
-    this.currentOperand = this.roundResult(result).toString();
-  }
-
-  chooseOperation(operation) {
-    if (this.currentOperand === "Error") return;
-
-    if (this.currentOperand === "" && this.previousOperand !== "") {
-      this.operation = operation;
-      return;
-    }
-
-    if (this.previousOperand !== "") {
-      this.compute();
-    }
-
-    this.operation = operation;
-    this.previousOperand = this.currentOperand;
-    this.currentOperand = "";
-  }
-
-  compute() {
-    if (this.currentOperand === "Error") return;
-
-    let computation;
-    const prev = parseFloat(this.previousOperand);
-    const current = parseFloat(this.currentOperand);
-
-    if (isNaN(prev) || isNaN(current)) return;
-
-    switch (this.operation) {
-      case "+":
-        computation = prev + current;
-        break;
-      case "-":
-      case "−":
-        computation = prev - current;
-        break;
-      case "×":
-      case "*":
-        computation = prev * current;
-        break;
-      case "÷":
-      case "/":
-        if (current === 0) {
-          this.currentOperand = "Error";
-          this.previousOperand = "";
-          this.operation = undefined;
-          this.shouldResetScreen = true;
-          return;
-        }
-        computation = prev / current;
-        break;
-      default:
-        return;
-    }
-
-    this.currentOperand = this.roundResult(computation).toString();
-    this.operation = undefined;
-    this.previousOperand = "";
-    this.shouldResetScreen = true;
-  }
-
-  roundResult(number) {
-    // Avoid precision issues (e.g. 0.1 + 0.2 = 0.30000000000000004)
-    return Math.round((number + Number.EPSILON) * 1e10) / 1e10;
-  }
-
-  formatDisplayNumber(numberStr) {
-    if (numberStr === "Error") return "Error";
-    if (numberStr === "" || numberStr === undefined) return "";
-
-    const parts = numberStr.toString().split(".");
-    const integerDigits = parseFloat(parts[0]);
-    const decimalDigits = parts[1];
-
-    let integerDisplay;
-    if (isNaN(integerDigits)) {
-      integerDisplay = "";
-    } else {
-      integerDisplay = integerDigits.toLocaleString("en", {
-        maximumFractionDigits: 0
-      });
-    }
-
-    if (decimalDigits != null) {
-      return `${integerDisplay}.${decimalDigits}`;
-    } else {
-      return integerDisplay;
-    }
-  }
-
-  updateDisplay() {
-    this.currentOperandElement.innerText = this.formatDisplayNumber(this.currentOperand);
-
-    if (this.operation != null) {
-      this.previousOperandElement.innerText = `${this.formatDisplayNumber(this.previousOperand)} ${this.operation}`;
-    } else {
-      this.previousOperandElement.innerText = "";
-    }
+// Convert current number to percentage
+function applyPercent() {
+  if (currentInput !== "Error" && currentInput !== "") {
+    currentInput = (parseFloat(currentInput) / 100).toString();
+    updateDisplay();
   }
 }
 
-// DOM Elements
-const previousOperandElement = document.getElementById("previousOperand");
-const currentOperandElement = document.getElementById("currentOperand");
-
-const calculator = new Calculator(previousOperandElement, currentOperandElement);
-
-// Event Listeners for UI buttons
-document.querySelectorAll("[data-number]").forEach((button) => {
+// Button click listeners
+document.querySelectorAll(".btn").forEach((button) => {
   button.addEventListener("click", () => {
-    calculator.appendNumber(button.dataset.number);
-    calculator.updateDisplay();
-  });
-});
-
-document.querySelectorAll("[data-operation]").forEach((button) => {
-  button.addEventListener("click", () => {
-    calculator.chooseOperation(button.dataset.operation);
-    calculator.updateDisplay();
-  });
-});
-
-document.querySelectorAll("[data-action]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const action = button.dataset.action;
-    switch (action) {
-      case "clear":
-        calculator.clear();
-        break;
-      case "delete":
-        calculator.delete();
-        break;
-      case "percent":
-        calculator.applyPercent();
-        break;
-      case "equals":
-        calculator.compute();
-        break;
+    if (button.dataset.number) {
+      appendNumber(button.dataset.number);
+    } else if (button.dataset.operation) {
+      setOperator(button.dataset.operation);
+    } else if (button.dataset.action === "clear") {
+      clearAll();
+    } else if (button.dataset.action === "delete") {
+      deleteLast();
+    } else if (button.dataset.action === "percent") {
+      applyPercent();
+    } else if (button.dataset.action === "equals") {
+      calculate();
     }
-    calculator.updateDisplay();
   });
 });
 
-// Keyboard support
+// Keyboard input support
 window.addEventListener("keydown", (e) => {
-  if ((e.key >= "0" && e.key <= "9") || e.key === ".") {
-    calculator.appendNumber(e.key);
-  } else if (e.key === "+" || e.key === "-") {
-    calculator.chooseOperation(e.key);
-  } else if (e.key === "*") {
-    calculator.chooseOperation("×");
-  } else if (e.key === "/") {
-    e.preventDefault(); // Prevent browser quick-find
-    calculator.chooseOperation("÷");
-  } else if (e.key === "%") {
-    calculator.applyPercent();
-  } else if (e.key === "Enter" || e.key === "=") {
-    e.preventDefault();
-    calculator.compute();
-  } else if (e.key === "Backspace") {
-    calculator.delete();
-  } else if (e.key === "Escape") {
-    calculator.clear();
-  }
-  calculator.updateDisplay();
+  if ((e.key >= "0" && e.key <= "9") || e.key === ".") appendNumber(e.key);
+  if (e.key === "+" || e.key === "-") setOperator(e.key);
+  if (e.key === "*") setOperator("×");
+  if (e.key === "/") setOperator("÷");
+  if (e.key === "%") applyPercent();
+  if (e.key === "Enter" || e.key === "=") calculate();
+  if (e.key === "Backspace") deleteLast();
+  if (e.key === "Escape") clearAll();
 });

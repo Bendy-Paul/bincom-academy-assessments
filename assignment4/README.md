@@ -32,7 +32,7 @@ This assignment demonstrates how to build a fully functional, interactive calcul
 
 - **HTML5**: Semantic document structure and data attributes (`data-number`, `data-operation`, `data-action`) for clean JavaScript hook separation.
 - **CSS3**: CSS Grid for button matrix, Flexbox for display alignment, hover/active pseudo-classes, and responsive media queries.
-- **JavaScript (ES6+)**: Object-Oriented `Calculator` class managing arithmetic calculations, display updates, formatted number commas, and keyboard listeners.
+- **JavaScript (ES6+)**: Clean, beginner-friendly modular functions managing state variables (`currentInput`, `previousInput`, `operator`), arithmetic operations, DOM updates, and keyboard listeners.
 
 ---
 
