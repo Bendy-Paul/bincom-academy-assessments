@@ -1,6 +1,6 @@
 # Bincom Assignment 4 - Simple Calculator
 
-A modern, responsive, and lightweight calculator application built using **HTML5, CSS3, and JavaScript**. This project was created as part of the Bincom Academy assessment.
+A simple, responsive calculator built with **PHP, HTML5, and CSS3**. All arithmetic is performed on the server, and the operands are submitted through an HTML **GET** form. There is no JavaScript in this project.
 
 - **GitHub Repository**: [https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment4](https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment4)
 
@@ -8,52 +8,52 @@ A modern, responsive, and lightweight calculator application built using **HTML5
 
 ## 📌 Project Overview
 
-This assignment demonstrates how to build a fully functional, interactive calculator application using client-side technologies. It features fundamental arithmetic operations, state management, edge-case handling (such as floating-point precision and division by zero), clean CSS Grid layout, and keyboard event support.
+This assignment demonstrates server-side form handling in PHP. The user enters two numbers, selects an operation, and submits the form. The browser sends the values in the URL query string, PHP validates them, computes the result, and renders the page again with the answer on the calculator display.
+
+Example request:
+
+```text
+http://localhost/bincom/assignment4/index.php?number1=12&number2=8&operation=add
+```
 
 ---
 
 ## ✨ Features
 
 - **Standard Arithmetic Operations**: Addition (`+`), Subtraction (`−`), Multiplication (`×`), and Division (`÷`).
-- **Additional Functions**:
-  - `AC` (All Clear): Resets the entire calculator state.
-  - `DEL` (Backspace): Deletes the last entered digit.
-  - `%` (Percentage): Converts current number to a percentage.
-  - `.` (Decimal): Allows precise decimal calculations with prevention of multiple dots.
-- **Two-Line Display**: Shows the active calculation history on the top line and current input/result on the main display.
-- **Floating-Point Precision Fix**: Automatically eliminates precision artifacts (e.g., `0.1 + 0.2 = 0.3`).
-- **Division by Zero Protection**: Gracefully alerts with `Error` instead of crashing.
-- **Full Keyboard Support**: Seamlessly type numbers, operators (`+`, `-`, `*`, `/`), `Enter` / `=`, `Backspace`, `Escape` for AC, and `%`.
-- **Responsive & Minimalist UI**: Clean card design with CSS Grid layout that adapts to any screen or mobile device.
+- **GET Request Handling**: Values are passed as `number1`, `number2`, and `operation`.
+- **Server-Side Validation**:
+  - Both operands must be numeric.
+  - The operation must be one of the four supported values.
+  - Division by zero is reported as an error instead of crashing.
+- **Human-Readable Output**: Results are rounded to remove floating-point artifacts and formatted with thousands separators.
+- **Sticky Form Values**: Submitted values remain in the fields after the calculation.
+- **Responsive UI**: The same clean card design adapts to mobile and desktop screens.
+- **No JavaScript**: The entire flow works with plain HTML and PHP.
 
 ---
 
 ## 🛠️ Technologies Used
 
-- **HTML5**: Semantic document structure and data attributes (`data-number`, `data-operation`, `data-action`) for clean JavaScript hook separation.
-- **CSS3**: CSS Grid for button matrix, Flexbox for display alignment, hover/active pseudo-classes, and responsive media queries.
-- **JavaScript (ES6+)**: Clean, beginner-friendly modular functions managing state variables (`currentInput`, `previousInput`, `operator`), arithmetic operations, DOM updates, and keyboard listeners.
+- **PHP 8**: Request handling (`$_GET`), validation, arithmetic, and number formatting.
+- **HTML5**: Semantic markup and a native `method="get"` form.
+- **CSS3**: Flexbox layout, focus states, hover effects, and a responsive media query.
 
 ---
 
 ## 🚀 How to Run the Application
 
-You can view and test this project in multiple ways:
+### Using XAMPP (required, because PHP must be executed)
 
-### Option 1: Direct File Open
-1. Navigate to the project directory:
-   ```
-   C:\xampp\htdocs\bincom\assignment4\
-   ```
-2. Double-click `index.html` to open it in your default web browser (Chrome, Edge, Firefox, etc.).
-
-### Option 2: Using Localhost (XAMPP)
 1. Start the **Apache** server from the XAMPP Control Panel.
-2. Open your web browser.
-3. Visit the URL:
-   ```
+2. Place the project folder inside `C:\xampp\htdocs\`.
+3. Open your browser and visit:
+
+   ```text
    http://localhost/bincom/assignment4/
    ```
+
+Opening `index.php` directly as a file will not work, since PHP code must be executed by a web server.
 
 ---
 
@@ -61,9 +61,30 @@ You can view and test this project in multiple ways:
 
 ```text
 assignment4/
-├── index.html         # Application layout and markup
-├── style.css          # Minimal styles and CSS Grid layout
-├── script.js          # Calculator logic, state handling, and keyboard support
+├── index.php          # Form, PHP calculation logic, and result display
+├── style.css          # Calculator and form styling
 ├── README.md          # Project overview and setup instructions
-└── DOCUMENTATION.md   # In-depth technical breakdown and design decisions
+└── DOCUMENTATION.md   # In-depth technical breakdown
 ```
+
+---
+
+## 🔢 Query Parameters
+
+| Parameter   | Type   | Required | Description                                        |
+| :---------- | :----- | :------- | :------------------------------------------------- |
+| `number1`   | number | Yes      | The first operand.                                 |
+| `number2`   | number | Yes      | The second operand.                                |
+| `operation` | string | Yes      | One of `add`, `subtract`, `multiply`, or `divide`. |
+
+---
+
+## 🧪 Quick Test URLs
+
+| Calculation     | URL                                                        |
+| :-------------- | :--------------------------------------------------------- |
+| `12 + 8`        | `index.php?number1=12&number2=8&operation=add`              |
+| `12 − 8`        | `index.php?number1=12&number2=8&operation=subtract`         |
+| `12 × 8`        | `index.php?number1=12&number2=8&operation=multiply`         |
+| `12 ÷ 8`        | `index.php?number1=12&number2=8&operation=divide`           |
+| Division by zero | `index.php?number1=12&number2=0&operation=divide`          |

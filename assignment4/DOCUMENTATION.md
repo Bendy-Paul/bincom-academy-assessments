@@ -2,104 +2,147 @@
 
 ## 1. Introduction
 
-This documentation details the architecture, computational logic, and UI design decisions implemented in the **Bincom Assignment 4 Simple Calculator**. Built with **HTML5**, **CSS3**, and vanilla **JavaScript (ES6+)**, the application delivers an intuitive, accessible, and mathematically reliable desktop and mobile calculator.
+This documentation explains the architecture, server-side logic, and UI design of the **Bincom Assignment 4 Simple Calculator**.
+
+The calculator is implemented entirely with **PHP, HTML5, and CSS3**. The form submits with the HTTP **GET** method, sending `number1`, `number2`, and `operation` in the URL. PHP reads those parameters, validates them, performs the arithmetic, and renders the result. No JavaScript file is used anywhere in the project.
 
 The project repository is hosted on GitHub at:
+
 - **GitHub Repository**: [https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment4](https://github.com/Bendy-Paul/bincom-academy-assessments/tree/main/assignment4)
 
 ---
 
-## 2. Technical Architecture & Approach
+## 2. Technical Architecture
 
-The project adheres to a clean separation of concerns:
-- **Structure (`index.html`)**: Declares UI elements using HTML5 semantic tags and descriptive `data-*` attributes to decouple layout from logic.
-- **Presentation (`style.css`)**: Implements CSS Grid for precise button matrix alignment, responsive sizing, and interactive tactile feedback.
-- **Logic (`script.js`)**: Encapsulates state variables (`currentInput`, `previousInput`, `operator`), arithmetic operations, and event listeners using clean, modular functions.
+The project keeps a clear separation of concerns:
+
+- **Logic (`index.php` top block)**: Defines the supported operations, reads `$_GET`, validates the input, calculates the result, and prepares display values.
+- **Structure (`index.php` HTML block)**: Renders the display, the GET form, and the result. PHP only echoes already-prepared values.
+- **Presentation (`style.css`)**: Styles the display, the input fields, the select box, buttons, and the responsive layout.
+
+The request/response cycle is:
+
+1. The browser requests `index.php` (no query string on the first visit).
+2. The user fills in the two number fields and chooses an operation.
+3. The form submits to `index.php?number1=...&number2=...&operation=...`.
+4. PHP validates and computes the answer.
+5. The page is rendered with the expression and result shown on the display.
 
 ---
 
 ## 3. Implementation Breakdown
 
-### 3.1 State Management & Functions
+### 3.1 Supported Operations
 
-The calculator uses intuitive top-level state variables:
-- `currentInput`: String representing the currently active number being entered or the computation output.
-- `previousInput`: String representing the stored previous operand before an operator was selected.
-- `operator`: String symbol of the chosen binary operation (`+`, `-`, `×`, `÷`).
+Operations are defined in a whitelist array, which doubles as the source for the `<select>` options and the symbol shown in the display:
 
-### 3.2 Core Calculation Logic
+```php
+$operations = [
+    'add'      => ['label' => 'Addition (+)',       'symbol' => '+'],
+    'subtract' => ['label' => 'Subtraction (−)',    'symbol' => '−'],
+    'multiply' => ['label' => 'Multiplication (×)', 'symbol' => '×'],
+    'divide'   => ['label' => 'Division (÷)',       'symbol' => '÷'],
+];
+```
 
-Calculations are performed with `parseFloat()` and standard arithmetic operations:
-```javascript
-switch (operator) {
-  case "+":
-    result = prev + current;
-    break;
-  case "-":
-    result = prev - current;
-    break;
-  case "×":
-  case "*":
-    result = prev * current;
-    break;
-  case "÷":
-  case "/":
-    result = current === 0 ? "Error" : prev / current;
-    break;
+### 3.2 Request Handling
+
+A calculation only runs when all three parameters are present:
+
+```php
+if (isset($_GET['number1'], $_GET['number2'], $_GET['operation'])) {
+    $number1   = trim((string) $_GET['number1']);
+    $number2   = trim((string) $_GET['number2']);
+    $operation = (string) $_GET['operation'];
+    // ...
 }
 ```
 
-### 3.3 Precision & Edge Cases Handled
+### 3.3 Validation and Calculation
 
-1. **Floating-Point Artifacts**: In standard JavaScript, `0.1 + 0.2` results in `0.30000000000000004` due to binary IEEE 754 float representation. The calculator eliminates this artifact via an epsilon rounding utility:
-   ```javascript
-   roundResult(number) {
-     return Math.round((number + Number.EPSILON) * 1e10) / 1e10;
-   }
-   ```
-2. **Division by Zero**: Dividing by zero sets `currentOperand` to `"Error"` preventing undefined behavior or infinity crashes.
-3. **Multiple Decimal Prevention**: Disallows multiple `.` in a single number operand.
-4. **Digit Overflow**: Enforces a maximum input limit to prevent text overflow outside the screen bounds.
+Validation happens in this order:
 
-### 3.4 Display Formatting
+1. The operation must exist in the whitelist.
+2. Both operands must pass `is_numeric()`.
+3. Division by zero is rejected.
 
-Numbers are formatted with thousands commas for readability (e.g. `1,000,000`) without corrupting partial decimal typing (e.g. `1.05` remains intact while typing).
+```php
+switch ($operation) {
+    case 'add':
+        $result = $first + $second;
+        break;
+    case 'subtract':
+        $result = $first - $second;
+        break;
+    case 'multiply':
+        $result = $first * $second;
+        break;
+    case 'divide':
+        $result = $first / $second;
+        break;
+}
+```
 
-### 3.5 Keyboard Input Handling
+### 3.4 Number Formatting
 
-Desktop users can operate the calculator directly through keyboard events:
-- Numbers: `0` - `9` and `.`
-- Operators: `+`, `-`, `*`, `/`
-- Actions: `Enter` or `=` for equals, `Backspace` for delete, `Escape` for AC, and `%` for percent.
+PHP floats can still show binary representation artifacts (for example `0.1 + 0.2`). Results are rounded to 10 decimal places before display:
+
+```php
+function formatNumber(float $number): string
+{
+    $number = round($number, 10);
+
+    if (floor($number) === $number && abs($number) < 1e15) {
+        return number_format($number, 0, '.', ',');
+    }
+
+    return rtrim(rtrim(number_format($number, 10, '.', ','), '0'), '.');
+}
+```
+
+Whole numbers get thousands separators (`1,234`), while decimals keep only their meaningful digits (`1,234.5`).
+
+### 3.5 Output Escaping
+
+Every value echoed back into the page is passed through `htmlspecialchars(..., ENT_QUOTES)` so that user input cannot inject markup or break the HTML attributes.
+
+### 3.6 Error States
+
+Errors are shown on the calculator display with a dedicated `.is-error` style:
+
+- `Please choose a valid operation.` — unknown `operation` value.
+- `Please enter a valid number in both fields.` — missing or non-numeric operand.
+- `Cannot divide by zero.` — division where the second operand is `0`.
 
 ---
 
 ## 4. UI Design & Styling
 
-- **CSS Grid**: Utilizes `grid-template-columns: repeat(4, 1fr)` with a `12px` gap for balanced button proportions.
-- **Visual Categorization**:
-  - Number keys: Soft neutral background (`#f8fafc`).
-  - Operators: Subtle primary tint (`#eff6ff` with `#2563eb` text).
-  - Clear / Del actions: Subtle danger tint (`#fee2e2` with `#dc2626` text).
-  - Equals button: Prominent solid blue (`#2563eb` with white text).
-- **Tactile Feedback**: Includes `transform: scale(0.96)` on button active state for responsive feedback.
+- **Display**: Dark panel (`#0f172a`) showing the submitted expression on the top line and the result (or error) on the main line.
+- **Form**: Stacked fields in a flex column, each with a small uppercase label.
+- **Inputs and Select**: Light background (`#f8fafc`), rounded corners, and a blue focus ring (`box-shadow`) for clear keyboard feedback.
+- **Calculate Button**: Prominent solid blue (`#2563eb`) matching the original design.
+- **AC Link**: A plain link to `index.php` that clears the URL parameters and resets the form, replacing the old JavaScript clear action.
+- **Responsive Layout**: Cards are capped at `400px` wide with reduced padding below `400px`.
 
 ---
 
 ## 5. Verification & Testing
 
-| Test Case | Input | Expected Output | Status |
-| :--- | :--- | :--- | :--- |
-| Basic Addition | `7 + 5 =` | `12` | Passed |
-| Float Precision | `0.1 + 0.2 =` | `0.3` | Passed |
-| Division by Zero | `9 ÷ 0 =` | `Error` | Passed |
-| Chained Operations | `10 + 5 × 2 =` | `30` | Passed |
-| Percentage | `50 %` | `0.5` | Passed |
-| Backspace | `123 DEL` | `12` | Passed |
-| Keyboard Input | Type `8 * 7 Enter` | `56` | Passed |
+| Test Case           | Query String                                     | Expected Output | Status |
+| :------------------ | :----------------------------------------------- | :-------------- | :----- |
+| Basic Addition      | `?number1=7&number2=5&operation=add`             | `12`            | Passed |
+| Subtraction         | `?number1=7&number2=5&operation=subtract`        | `2`             | Passed |
+| Multiplication      | `?number1=7&number2=5&operation=multiply`        | `35`            | Passed |
+| Division            | `?number1=10&number2=4&operation=divide`         | `2.5`           | Passed |
+| Float Precision     | `?number1=0.1&number2=0.2&operation=add`         | `0.3`           | Passed |
+| Division by Zero    | `?number1=9&number2=0&operation=divide`          | Error message   | Passed |
+| Invalid Operation   | `?number1=1&number2=2&operation=power`           | Error message   | Passed |
+| Non-Numeric Input   | `?number1=abc&number2=2&operation=add`           | Error message   | Passed |
+| Empty First Visit   | `index.php`                                      | `0`             | Passed |
 
 ---
 
 ## 6. Conclusion
 
-The Assignment 4 Simple Calculator delivers a complete, modular, and maintainable implementation. It fulfills all criteria using HTML5, CSS3, and JavaScript, while incorporating robust error handling and a clean user experience.
+The Assignment 4 calculator is now a server-rendered PHP application. It keeps the original interface while replacing all client-side JavaScript with a GET form, PHP validation, arithmetic, and escaped output. The result is a small, readable project that demonstrates the core PHP request-handling workflow.
