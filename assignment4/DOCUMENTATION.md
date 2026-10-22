@@ -127,7 +127,31 @@ Errors are shown on the calculator display with a dedicated `.is-error` style:
 
 ---
 
-## 5. Verification & Testing
+## 5. Screenshots
+
+> Add your screenshots to the `assignment4/screenshots/` folder and replace the placeholder paths below.
+
+### 5.1 Initial calculator view
+
+![Calculator before calculation](screenshots/calculator-empty.png)
+
+*Figure 1: The calculator with empty Number 1 and Number 2 fields.*
+
+### 5.2 Calculation result
+
+![Calculator showing a result](screenshots/calculator-result.png)
+
+*Figure 2: The result of `12 + 8` shown on the display.*
+
+### 5.3 Error handling
+
+![Calculator showing a division by zero error](screenshots/calculator-error.png)
+
+*Figure 3: The error message displayed when dividing by zero.*
+
+---
+
+## 6. Verification & Testing
 
 | Test Case           | Query String                                     | Expected Output | Status |
 | :------------------ | :----------------------------------------------- | :-------------- | :----- |
@@ -143,6 +167,6 @@ Errors are shown on the calculator display with a dedicated `.is-error` style:
 
 ---
 
-## 6. Conclusion
+## 7. Conclusion
 
 The Assignment 4 calculator is now a server-rendered PHP application. It keeps the original interface while replacing all client-side JavaScript with a GET form, PHP validation, arithmetic, and escaped output. The result is a small, readable project that demonstrates the core PHP request-handling workflow.

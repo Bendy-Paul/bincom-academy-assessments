@@ -42,6 +42,28 @@ All three use prepared statements with bound parameters.
 - Output escaped with `htmlspecialchars()`.
 - IDs cast to integers.
 
+## Screenshots
+
+> Add your screenshots to `assignment5/screenshots/` and replace the placeholder paths below.
+
+### Main page
+
+![ToDo app main page](screenshots/todo-main.png)
+
+*Figure 1: The task list with the add form.*
+
+### Completed task
+
+![Task marked as done](screenshots/todo-completed.png)
+
+*Figure 2: A task shown with a strikethrough after clicking Done.*
+
+### Database table
+
+![tasks table in phpMyAdmin](screenshots/todo-database.png)
+
+*Figure 3: The `tasks` table in phpMyAdmin.*
+
 ## Tested
 
 | Action        | Expected                    | Result |
