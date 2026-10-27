@@ -42,7 +42,8 @@ assignment6/
 ├── config.php       # MySQLi connection, helpers and validation
 ├── database.sql     # Database, table and dummy data
 ├── README.md
-└── DOCUMENTATION.md
+├── DOCUMENTATION.md
+└── Assignment 6 - Documentation.docx   # Word version of the documentation
 ```
 
 ## Built With
